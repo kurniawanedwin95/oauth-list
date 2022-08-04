@@ -2,13 +2,15 @@ import os
 import pathlib
 import requests
 
-from flask import render_template, session, abort, redirect, request
+from flask import Flask, render_template, session, abort, redirect, request
 from app import app
 
 from google_auth_oauthlib.flow import Flow
 from google.oauth2 import id_token
 from pip._vendor import cachecontrol
 import google.auth.transport.requests
+
+app = Flask (__name__)
 app.secret_key = "oauth-list_key"
 
 os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
@@ -49,12 +51,12 @@ def login():
 def callback():
     flow.fetch_token(authorization_response=request.url)
 
-    test1 = session["state"]
-    test2 = request.args["state"]
-
-    print (f"this is session state {test1}")
-    print (f"this is request args state {test2}")
-
+    # test1 = session["state"]
+    # test2 = request.args["state"]
+    #
+    # print (f"this is session state {test1}")
+    # print (f"this is request args state {test2}")
+    #
     if not session["state"] == request.args["state"]:
         abort(500) #state does not match and prevent cross state attacks
 
