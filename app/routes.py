@@ -3,7 +3,6 @@ import pathlib
 import requests
 
 from flask import Flask, render_template, session, abort, redirect, request
-from app import app
 
 from google_auth_oauthlib.flow import Flow
 from google.oauth2 import id_token
@@ -69,8 +68,8 @@ def callback():
         request = token_request,
         audience = GOOGLE_CLIENT_ID
     )
-    return id_info
-    # return render_template('callback.html')
+    # return id_info
+    return render_template('callback.html', id_info=id_info)
 
 @app.route('/logout')
 def logout():
