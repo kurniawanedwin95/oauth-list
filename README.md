@@ -1,6 +1,13 @@
 # oauth-list
 Test project to implement **Google's Oauth 2.0**
 
+to start the virtual environment:
+source venv/Scripts/activate
+
+to start the flask-app:
+export FLASK_APP=routes.py
+python -m flask run
+
 the flow of the web application will be:
 - *User* will arrive at the landing page and see a prompt to login using their Google credentials
 - *User* logs in using their Google credentials
