@@ -43,7 +43,6 @@ def main():
 def login():
     authorization_url , state = flow.authorization_url()
     session["state"] = state
-
     return redirect(authorization_url)
 
 @app.route('/callback')
