@@ -14,17 +14,19 @@
           <input type="text" name="content" placeholder="Click to start typing"></input>
         </p>
         <button type="submit">Post</button>
-      <form/>
-    <div/>
+      </form>
+    </div>
 
-      {%for entry in entries%}
+    <div class="list">
+      {% for entry in entries %}
         <div class="stored">
           <p>{{ entry["content"] }}</p>
-          <form method="post" action="{{ url_for('delete', id=entry['_id'])}}">
+          <form method="post" action="{{ url_for('delete', id=entry['_id']) }}">
             <input type="submit" value="Delete" onclick="return confirm('Confirm deletion?')">
           </form>
         </div>
       {% endfor %}
+    </div>
 
   </body>
 </html>
