@@ -2,7 +2,9 @@ import os
 import pathlib
 import requests
 
-from flask import Flask, render_template, session, abort, redirect, request
+from flask import Flask, render_template, session, abort, redirect, request, url_for
+from pymongo import MongoClient
+from bson.objectid import ObjectId
 
 from google_auth_oauthlib.flow import Flow
 from google.oauth2 import id_token
@@ -11,6 +13,9 @@ import google.auth.transport.requests
 
 app = Flask (__name__)
 app.secret_key = "oauth-list_key"
+client = MongoClient('localhost', 27017) #port 27017
+db = client.flask_db
+entries = db.entries
 
 os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
 
@@ -49,12 +54,6 @@ def login():
 def callback():
     flow.fetch_token(authorization_response=request.url)
 
-    # test1 = session["state"]
-    # test2 = request.args["state"]
-    #
-    # print (f"this is session state {test1}")
-    # print (f"this is request args state {test2}")
-    #
     if not session["state"] == request.args["state"]:
         abort(500) #state does not match and prevent cross state attacks
 
@@ -80,6 +79,21 @@ def logout():
 def protected_page():
     return "list page here <a href='/logout'><button>Logout</button></a>"
 
+@app.route('/entry', methods=("GET", "POST"))
+def entry():
+    if request.method == "POST":
+        content = request.form["content"]
+        entries.insert_one({'content': content})
+        return redirect(url_for('entry'))
+    all_entries = entries.find()
+    return render_template('entry.html', entries=all_entries)
+
+@app.route('/<id>/delete/', methods=("GET", "POST"))
+def delete(id):
+    entries.delete_one({"_id": ObjectId(id)})
+    return redirect(url_for('entry'))
+
+#next feature is to tie the entries to a user id
 
 if __name__ == "__main__":
     app.run(debug=True)

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Index page of the webapp</title>
+  </head>
+  <body>
+    <h1>
+      Would you like to share your thoughts today?
+    </h1>
+    <div class="content">
+      <form method="post">
+        <p>
+          <input type="text" name="content" placeholder="Click to start typing"></input>
+        </p>
+        <button type="submit">Post</button>
+      <form/>
+    <div/>
+
+      {%for entry in entries%}
+        <div class="stored">
+          <p>{{ entry["content"] }}</p>
+          <form method="post" action="{{ url_for('delete', id=entry['_id'])}}">
+            <input type="submit" value="Delete" onclick="return confirm('Confirm deletion?')">
+          </form>
+        </div>
+      {% endfor %}
+
+  </body>
+</html>
