@@ -6,12 +6,12 @@
   </head>
   <body>
     <h1>
-      Would you like to share your thoughts today?
+      Nice to see you again {{ user_id }}, would you like to share your thoughts today?
     </h1>
     <div class="content">
       <form method="post">
         <p>
-          <input type="text" name="content" placeholder="Click to start typing"></input>
+          <input type="text" name="content" id="user_id" placeholder="Click to start typing"></input>
         </p>
         <button type="submit">Post</button>
       </form>
@@ -20,7 +20,7 @@
     <div class="list">
       {% for entry in entries %}
         <div class="stored">
-          <p>{{ entry["content"] }}</p>
+          <p>{{ entry["user_id"] }} thought about {{ entry["content"] }}</p>
           <form method="post" action="{{ url_for('delete', id=entry['_id']) }}">
             <input type="submit" value="Delete" onclick="return confirm('Confirm deletion?')">
           </form>

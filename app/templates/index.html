@@ -6,8 +6,17 @@
   </head>
   <body>
     <h1>
-      Hello Sleepy, is this working?
+      Hello Sleepy, some content going on around here
     </h1>
     <a href='/login'><button>To Google Login</button></a>
+
+    <div class="list">
+      {% for entry in entries %}
+        <div class="stored">
+          <p>{{ entry["user_id"] }} was thinking about {{ entry["content"] }}</p>
+        </div>
+      {% endfor %}
+    </div>
+
   </body>
 </html>

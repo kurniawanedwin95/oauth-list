@@ -42,7 +42,8 @@ def login_is_required(function):
 @app.route('/')
 @app.route('/index')
 def main():
-    return render_template('index.html')
+    all_entries = entries.find()
+    return render_template('index.html', entries=all_entries)
 
 @app.route('/login')
 def login():
@@ -81,12 +82,15 @@ def protected_page():
 
 @app.route('/entry', methods=("GET", "POST"))
 def entry():
+    user_id = "xxx"
     if request.method == "POST":
         content = request.form["content"]
-        entries.insert_one({'content': content})
+        entries.insert_one({'content': content, 'user_id': user_id})
         return redirect(url_for('entry'))
-    all_entries = entries.find()
-    return render_template('entry.html', entries=all_entries)
+    myquery = {'user_id':user_id}
+    queried_entries = entries.find(myquery)
+
+    return render_template('entry.html', entries=queried_entries, user_id=user_id)
 
 @app.route('/<id>/delete/', methods=("GET", "POST"))
 def delete(id):
